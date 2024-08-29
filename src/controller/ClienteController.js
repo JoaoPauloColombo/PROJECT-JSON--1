@@ -1,15 +1,15 @@
-const Prod = require("../models/Prod");
+const Cliente = require("../models/Cliente");
 
-const ProdController = {
+const ClienteController = {
   create: async (req, res) => {
     try {
-      const { nome, preco, qtd } = req.body;
-      
-      const prodCriado = await Prod.create({ nome, preco, qtd });
+      const { nome, email, pedidos } = req.body;
+
+      const clienteCriado = await Cliente.create({ nome, email, pedidos });
 
       return res.status(200).json({
-        msg: "Produto criado com sucesso!",
-        prod: prodCriado,
+        msg: "Cliente criado com sucesso!",
+        user: clienteCriado,
       });
     } catch (error) {
       console.error(error);
@@ -19,32 +19,32 @@ const ProdController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-      const { nome, preco, qtd } = req.body;
+      const { nome, email, pedidos } = req.body;
 
       console.log({ id });
-      console.log({ nome, preco, qtd });
+      console.log({ nome, email, pedidos });
 
-      const prodUpdate = await Prod.findByPk(id);
+      const clienteUpdate = await Cliente.findByPk(id);
 
-      if (prodUpdate == null) {
+      if (clienteUpdate == null) {
         return res.status(404).json({
-          msg: "produto nao encontrado",
+          msg: "Cliente nao encontrado",
         });
       }
 
-      const updated = await prodUpdate.update({
+      const updated = await clienteUpdate.update({
         nome,
-        preco,
-        qtd,
+        email,
+        pedidos,
       });
       if (updated) {
         return res.status(200).json({
-          msg: "Produto atualizado com sucesso!",
+          msg: "Cliente atualizado com sucesso!",
         });
       }
-      return res.status(500).json({
-        msg: "Erro ao atualizar Produto",
-      });
+    return res.status(500).json({
+        msg:"Erro ao atualizar usuario"
+    })
     } catch (error) {
       console.error(error);
       return res.status(500).json({ msg: "Acione o Suporte" });
@@ -52,10 +52,10 @@ const ProdController = {
   },
   getAll: async (req, res) => {
     try {
-      const produtos = await Prod.findAll();
+      const clientes = await Cliente.findAll();
       return res.status(200).json({
-        msg: "Produto Encontrados!",
-        produtos,
+        msg: "Clientes Encontrados!",
+        clientes,
       });
     } catch (error) {
       console.error(error);
@@ -66,16 +66,16 @@ const ProdController = {
     try {
       const { id } = req.params;
 
-      const produtoEncontrado = await Prod.findByPk(id);
+      const clienteEncontrado = await Cliente.findByPk(id);
 
-      if (produtoEncontrado == null) {
+      if (clienteEncontrado == null) {
         return res.status(404).json({
-          msg: "Produto nao encontrado!",
+          msg: "Cliente nao encontrado!",
         });
       }
       return res.status(200).json({
-        msg: "Produto Encontrados",
-        prod: produtoEncontrado,
+        msg: "Cliente Encontrados",
+        usuario: clienteEncontrado,
       });
     } catch (error) {
       console.error(error);
@@ -86,17 +86,17 @@ const ProdController = {
     try {
       const { id } = req.params;
 
-      const prodFinded = await Prod.findByPk(id);
+      const clienteFinded = await Cliente.findByPk(id);
 
-      if (prodFinded == null) {
+      if (clienteFinded == null) {
         return res.status(404).json({
-          msg: "Produto nao encontrado",
+          msg: "Cliente nao encontrado",
         });
       }
-      await prodFinded.destroy();
+      await clienteFinded.destroy();
 
       return res.status(200).json({
-        msg: "Produto deletado com sucesso",
+        msg: "Cliente deletado com sucesso",
       });
     } catch (error) {
       console.error(error);
@@ -105,4 +105,4 @@ const ProdController = {
   },
 };
 
-module.exports = ProdController;
+module.exports = ClienteController;
