@@ -6,11 +6,23 @@ const sequelize = require("./config/config");
 const User = require("./models/User");
 const Prod = require("./models/Prod");
 const Cliente = require("./models/Cliente");
+const routerUpload = require('./router/routerUpload');
+
+var cors = require('cors');
 
 const app = express();
+
+app.use(cors());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE');
+  next();
+});
 //Modelo da API JSON
 app.use(express.json());
 app.use("/api", router);
+app.use('/api/image', routerUpload);
 
 app.get("/healthcheck", (req, res) => {
   // 200 significa que está ok o servidor
